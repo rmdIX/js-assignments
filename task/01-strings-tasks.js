@@ -1,5 +1,3 @@
-'use strict';
-
 function concatenateStrings(value1, value2) {
     return value1 + value2;
 }
@@ -13,7 +11,7 @@ function getStringFromTemplate(firstName, lastName) {
 }
 
 function extractNameFromTemplate(value) {
-    return value.replace(/^Hello, (.+?)!$/, '$1');
+    return value.split(' ')[1] + ' ' + value.split(' ')[2].slice(0, -1);
 }
 
 function getFirstChar(value) {
@@ -33,7 +31,7 @@ function removeFirstOccurrences(str, value) {
 }
 
 function unbracketTag(str) {
-    return str.replace(/^<|>$/g, '');
+    return str.substring(1, str.length - 1);
 }
 
 function convertToUpperCase(str) {
@@ -45,10 +43,11 @@ function extractEmails(str) {
 }
 
 function getRectangleString(width, height) {
-    const horizontalLine = `┌${'─'.repeat(width - 2)}┐\n`;
-    const middleLine = `│${' '.repeat(width - 2)}│\n`;
-    const bottomLine = `└${'─'.repeat(width - 2)}┘\n`;
-    return `${horizontalLine}${middleLine.repeat(height - 2)}${bottomLine}`;
+    const horizontal = '─'.repeat(width - 2);
+    const top = `┌${horizontal}┐\n`;
+    const middle = `│${' '.repeat(width - 2)}│\n`.repeat(height - 2);
+    const bottom = `└${horizontal}┘\n`;
+    return top + middle + bottom;
 }
 
 function encodeToRot13(str) {
@@ -62,13 +61,11 @@ function isString(value) {
 }
 
 function getCardId(value) {
-    const cards = [
-        'A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
-        'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
-        'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
-        'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'
-    ];
-    return cards.indexOf(value);
+    const suits = ['♣', '♦', '♥', '♠'];
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    const suit = value.charAt(value.length - 1);
+    const rank = value.substring(0, value.length - 1);
+    return suits.indexOf(suit) * 13 + ranks.indexOf(rank);
 }
 
 module.exports = {
@@ -88,3 +85,4 @@ module.exports = {
     isString,
     getCardId
 };
+
